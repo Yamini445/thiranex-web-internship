@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 70%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .weather-box {
+      margin-top: 20px;
+      background: #eeeeee;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .weather-box p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Weather Dashboard</h1>
+
+    <input type="text" id="cityInput" placeholder="Enter city name">
+
+    <button onclick="getWeather()">Search</button>
+
+    <div id="error" class="error"></div>
+
+    <div id="weatherResult" class="weather-box" style="display: none;">
+
+      <h2 id="cityName"></h2>
+
+      <p id="temperature"></p>
+
+      <p id="humidity"></p>
+
+      <p id="wind"></p>
+
+      <p id="condition"></p>
+
+    </div>
+
+  </div>
+
+<script>
+
+async function getWeather() {
+
+  const city = document.getElementById("cityInput").value;
+
+  const error = document.getElementById("error");
+
+  const resultBox = document.getElementById("weatherResult");
+
+  error.innerHTML = "";
+
+  resultBox.style.display = "none";
+
+  if(city === "") {
+
+    error.innerHTML = "Please enter a city name";
+
+    return;
+  }
+
+  try {
+
+    const url = `https://wttr.in/${city}?format=j1`;
+
+    const response = await fetch(url);
+
+    if(!response.ok) {
+
+      throw new Error("Unable to fetch weather");
+
+    }
+
+    const data = await response.json();
+
+    document.getElementById("cityName").innerHTML = city;
+
+    document.getElementById("temperature").innerHTML =
+      `Temperature: ${data.current_condition[0].temp_C} °C`;
+
+    document.getElementById("humidity").innerHTML =
+      `Humidity: ${data.current_condition[0].humidity}%`;
+
+    document.getElementById("wind").innerHTML =
+      `Wind Speed: ${data.current_condition[0].windspeedKmph} km/h`;
+
+    document.getElementById("condition").innerHTML =
+      `Weather: ${data.current_condition[0].weatherDesc[0].value}`;
+
+    resultBox.style.display = "block";
+
+  }
+
+  catch(err) {
+
+    error.innerHTML = err.message;
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
