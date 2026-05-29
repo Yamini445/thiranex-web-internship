@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog</title>
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .top-bar {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Online Product Catalog</h1>
+
+  <div class="top-bar">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search products..."
+      onkeyup="searchProducts()"
+    >
+
+  </div>
+
+  <div class="products" id="productContainer"></div>
+
+<script>
+
+const products = [
+
+  {
+    name: "Wireless Headphones",
+    price: "₹1999",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+  },
+
+  {
+    name: "Smart Watch",
+    price: "₹2499",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30"
+  },
+
+  {
+    name: "Laptop",
+    price: "₹55000",
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
+  },
+
+  {
+    name: "Mobile Phone",
+    price: "₹18000",
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
+  }
+
+];
+
+function displayProducts(items) {
+
+  const container = document.getElementById("productContainer");
+
+  container.innerHTML = "";
+
+  items.forEach(product => {
+
+    container.innerHTML += `
+
+      <div class="card">
+
+        <img src="${product.image}" alt="${product.name}">
+
+        <h3>${product.name}</h3>
+
+        <p>${product.price}</p>
+
+        <button>Add to Cart</button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+function searchProducts() {
+
+  const searchValue =
+    document.getElementById("searchInput").value.toLowerCase();
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchValue)
+  );
+
+  displayProducts(filteredProducts);
+
+}
+
+displayProducts(products);
+
+</script>
+
+</body>
+</html>
